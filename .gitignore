@@ -1,1 +1,7 @@
+/target
+**/*.rs.bk
+.DS_Store
+Thumbs.db
+aura_pro_config.json
+*.env
 
