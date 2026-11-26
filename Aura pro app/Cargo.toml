@@ -1,0 +1,27 @@
+[package]
+name = "aura_pro"
+version = "1.5.0"
+edition = "2021"
+
+[dependencies]
+dxgi-capture-rs = "1.2"
+dns-lookup = "2.0"
+eframe = { version = "0.29", default-features = true, features = ["default_fonts", "glow"] }
+egui = "0.29"
+futures-util = "0.3"
+image = { version = "0.25", default-features = false, features = ["png"] }
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "stream", "rustls-tls"] }
+semver = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["rt-multi-thread", "macros", "fs", "io-util"] }
+tray-icon = "0.19"
+
+[build-dependencies]
+winres = "0.1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
