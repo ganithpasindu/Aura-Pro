@@ -1,7 +1,26 @@
-/target
+# Rust / Cargo
+/target/
 **/*.rs.bk
+Cargo.lock
+
+# Arduino / PlatformIO
+*.o
+*.d
+*.elf
+*.hex
+*.map
+*.bin
+.pio/
+build/
+
+# Windows / Installer artifacts
+*.exe
+*.msi
+*.part
+
+# OS & Editors
 .DS_Store
 Thumbs.db
-aura_pro_config.json
-*.env
-
+.vscode/
+.idea/
+*.swp
