@@ -1,0 +1,45 @@
+name: Build and Release Aura Pro
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows-app:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build release binary
+        shell: pwsh
+        run: cargo build --release
+
+      - name: Package executable
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release_assets | Out-Null
+          $exe = Get-ChildItem -Path target/release -Filter "*.exe" | Select-Object -First 1
+          if (-not $exe) { throw "No .exe produced in target/release" }
+          Copy-Item $exe.FullName -Destination "release_assets/Aura_pro_Setup.exe"
+
+      - name: Generate SHA-256 checksum
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash "release_assets/Aura_pro_Setup.exe" -Algorithm SHA256).Hash.ToLower()
+          "$hash  Aura_pro_Setup.exe" | Out-File -FilePath "release_assets/SHA256SUMS.txt" -Encoding utf8
+
+      - name: Create GitHub Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release_assets/Aura_pro_Setup.exe
+            release_assets/SHA256SUMS.txt
+          generate_release_notes: true
